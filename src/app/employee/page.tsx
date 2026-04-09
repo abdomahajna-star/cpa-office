@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { FileText, FolderOpen } from "lucide-react";
 
 export default async function EmployeeDashboard() {
   const companies = await prisma.company.findMany({
@@ -26,7 +27,7 @@ export default async function EmployeeDashboard() {
 
       {companies.length === 0 ? (
         <div className="card text-center py-16 text-slate-400">
-          <p className="text-5xl mb-4">Ἶ2</p>
+          <p className="text-5xl mb-4">🏢</p>
           <p>אין לקוחות פעילים במערכת. בקש מהמנהל להוסיף לקוחות.</p>
         </div>
       ) : (
@@ -49,11 +50,11 @@ export default async function EmployeeDashboard() {
                     <p className="text-sm text-slate-500 mt-0.5">{company.contactName}</p>
                   )}
                   <div className="flex items-center gap-3 mt-2">
-                    <span className="text-xs text-slate-400">
-                      Ὄ4 {company._count.payrollFiles} תלושים
+                    <span className="text-xs text-slate-400 flex items-center gap-1">
+                      <FileText className="w-3.5 h-3.5" /> {company._count.payrollFiles} תלושים
                     </span>
-                    <span className="text-xs text-slate-400">
-                      Ὄ1 {company._count.bookkeepingFiles} קבצים
+                    <span className="text-xs text-slate-400 flex items-center gap-1">
+                      <FolderOpen className="w-3.5 h-3.5" /> {company._count.bookkeepingFiles} קבצים
                     </span>
                   </div>
                 </div>
