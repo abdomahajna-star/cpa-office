@@ -24,17 +24,17 @@ export default async function AdminDashboard() {
   });
 
   const stats = [
-    { label: "××§××××ª ×¤×¢××××", value: totalCompanies, icon: "ð¢", href: "/admin/companies", color: "bg-blue-50 text-blue-700" },
-    { label: "××©×ª××©× ××§××", value: totalClients, icon: "ð¤", href: "/admin/users", color: "bg-purple-50 text-purple-700" },
-    { label: "×ª×××©× ×©××¨", value: totalPayroll, icon: "ð°", href: "#", color: "bg-green-50 text-green-700" },
-    { label: "×§××¦× ×× ×××ª ××©××× ××ª", value: totalBookkeeping, icon: "ð", href: "#", color: "bg-amber-50 text-amber-700" },
-    { label: "×××¨×××ª ×¡×\"×", value: recentDownloads, icon: "ð¥", href: "/admin/logs", color: "bg-slate-50 text-slate-700" },
-    { label: "××××¢××ª ××× ××¢× ×", value: pendingMessages, icon: "ð¨", href: "/admin/messages", color: pendingMessages > 0 ? "bg-red-50 text-red-700" : "bg-slate-50 text-slate-700" },
+    { label: "לקוחות פעילים", value: totalCompanies, icon: "Ἶ2", href: "/admin/companies", color: "bg-blue-50 text-blue-700" },
+    { label: "משתמשי לקוח", value: totalClients, icon: "὆4", href: "/admin/users", color: "bg-purple-50 text-purple-700" },
+    { label: "תלושי שכר", value: totalPayroll, icon: "Ὃ0", href: "#", color: "bg-green-50 text-green-700" },
+    { label: "קבצי הנהלת חשבונות", value: totalBookkeeping, icon: "Ὄ1", href: "#", color: "bg-amber-50 text-amber-700" },
+    { label: "הורדות סה\"כ", value: recentDownloads, icon: "὎5", href: "/admin/logs", color: "bg-slate-50 text-slate-700" },
+    { label: "הודעות ללא מענה", value: pendingMessages, icon: "὎8", href: "/admin/messages", color: pendingMessages > 0 ? "bg-red-50 text-red-700" : "bg-slate-50 text-slate-700" },
   ];
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E3A5F] mb-8">××× × ××××</h1>
+      <h1 className="text-2xl font-bold text-[#1E3A5F] mb-8">לוח ניהול</h1>
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
@@ -56,10 +56,10 @@ export default async function AdminDashboard() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
         {[
-          { label: "×××¡×£ ××§××", icon: "â", href: "/admin/companies?new=1" },
-          { label: "×××¡×£ ××©×ª××©", icon: "ð¤", href: "/admin/users?new=1" },
-          { label: "×¦×¤× ×××××¢××ª", icon: "ð¨", href: "/admin/messages" },
-          { label: "××× ×××¨×××ª", icon: "ð", href: "/admin/logs" },
+          { label: "הוסף לקוח", icon: "➕", href: "/admin/companies?new=1" },
+          { label: "הוסף משתמש", icon: "὆4", href: "/admin/users?new=1" },
+          { label: "צפה בהודעות", icon: "὎8", href: "/admin/messages" },
+          { label: "לוג הורדות", icon: "Ὄb", href: "/admin/logs" },
         ].map((a) => (
           <Link key={a.label} href={a.href} className="card text-center hover:shadow-md transition-shadow hover:bg-[#1E3A5F] hover:text-white group">
             <div className="text-2xl mb-2">{a.icon}</div>
@@ -71,11 +71,11 @@ export default async function AdminDashboard() {
       {/* Recent download log */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[#1E3A5F]">×××¨×××ª ×××¨×× ××ª</h2>
-          <Link href="/admin/logs" className="text-sm text-[#1E3A5F] hover:underline">×× ×××× â</Link>
+          <h2 className="font-bold text-[#1E3A5F]">הורדות אחרונות</h2>
+          <Link href="/admin/logs" className="text-sm text-[#1E3A5F] hover:underline">כל הלוג ←</Link>
         </div>
         {recentLogs.length === 0 ? (
-          <p className="text-slate-400 text-sm text-center py-6">××× ×××¨×××ª ×¢××××</p>
+          <p className="text-slate-400 text-sm text-center py-6">אין הורדות עדיין</p>
         ) : (
           <div className="space-y-2">
             {recentLogs.map((log) => {
@@ -85,7 +85,7 @@ export default async function AdminDashboard() {
                   <div>
                     <p className="font-medium text-slate-800">{log.user.name}</p>
                     <p className="text-xs text-slate-400">
-                      {file?.company?.name} Â· {file?.fileName}
+                      {file?.company?.name} · {file?.fileName}
                     </p>
                   </div>
                   <p className="text-xs text-slate-400">{new Date(log.downloadedAt).toLocaleString("he-IL")}</p>
