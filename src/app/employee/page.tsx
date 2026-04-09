@@ -16,18 +16,18 @@ export default async function EmployeeDashboard() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E3A5F]">××§××××ª</h1>
-          <p className="text-slate-500 mt-1">×××¨ ××§×× ×××¢××× ×× ×¦×¤××× ××§××¦××</p>
+          <h1 className="text-2xl font-bold text-[#1E3A5F]">לקוחות</h1>
+          <p className="text-slate-500 mt-1">בחר לקוח להעלאה או צפייה בקבצים</p>
         </div>
         <Link href="/employee/upload" className="btn-primary">
-          + ××¢×××ª ×§××¦××
+          + העלאת קבצים
         </Link>
       </div>
 
       {companies.length === 0 ? (
         <div className="card text-center py-16 text-slate-400">
-          <p className="text-5xl mb-4">ð¢</p>
-          <p>××× ××§××××ª ×¤×¢×××× ×××¢×¨××ª. ××§×© ×××× ×× ××××¡××£ ××§××××ª.</p>
+          <p className="text-5xl mb-4">Ἶ2</p>
+          <p>אין לקוחות פעילים במערכת. בקש מהמנהל להוסיף לקוחות.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -50,10 +50,10 @@ export default async function EmployeeDashboard() {
                   )}
                   <div className="flex items-center gap-3 mt-2">
                     <span className="text-xs text-slate-400">
-                      ð {company._count.payrollFiles} ×ª×××©××
+                      Ὄ4 {company._count.payrollFiles} תלושים
                     </span>
                     <span className="text-xs text-slate-400">
-                      ð {company._count.bookkeepingFiles} ×§××¦××
+                      Ὄ1 {company._count.bookkeepingFiles} קבצים
                     </span>
                   </div>
                 </div>
