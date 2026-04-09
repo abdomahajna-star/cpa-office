@@ -12,9 +12,6 @@ export async function GET() {
   const tasks = await prisma.shikloletTask.findMany({
     take: 30,
     orderBy: { createdAt: "desc" },
-    include: {
-      // @ts-ignore — company relation via companyId
-    },
   });
 
   // Manually join company names
@@ -24,7 +21,6 @@ export async function GET() {
     select: { id: true, name: true },
   });
   const companyMap = Object.fromEntries(companies.map((c) => [c.id, c]));
-
   const enriched = tasks.map((t) => ({ ...t, company: companyMap[t.companyId] }));
 
   return NextResponse.json({ tasks: enriched });
@@ -38,7 +34,6 @@ export async function POST(req: NextRequest) {
   }
 
   const { companyId, year, month, employeeId, employeeName } = await req.json();
-
   if (!companyId || !year || !month) {
     return NextResponse.json({ error: "חסרים שדות חובה" }, { status: 400 });
   }
