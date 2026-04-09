@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+  CLIENT
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  contactName String?
+  phone       String?
+  email       String?
+  status      String   @default("active") // active | inactive
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users           User[]
+  payrollFiles    PayrollFile[]
+  bookkeepingFiles BookkeepingFile[]
+  messages        Message[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  title        String?  // for employees shown on homepage
+  photoUrl     String?  // for employees shown on homepage
+  phone        String?
+  isActive     Boolean  @default(true)
+  companyId    String?  // only for CLIENT role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company      Company?      @relation(fields: [companyId], references: [id])
+  uploadedFiles PayrollFile[] @relation("UploadedBy")
+  uploadedBookkeeping BookkeepingFile[] @relation("UploadedByEmployee")
+  downloadLogs DownloadLog[]
+  messages     Message[]
+}
+
+model PayrollFile {
+  id           String   @id @default(cuid())
+  companyId    String
+  year         Int
+  month        Int      // 1-12
+  employeeId   String?  // null = "all employees summary"
+  employeeName String?
+  fileUrl      String
+  fileName     String
+  fileSizeBytes Int?
+  uploadedById String
+  uploadedAt   DateTime @default(now())
+
+  company      Company  @relation(fields: [companyId], references: [id])
+  uploadedBy   User     @relation("UploadedBy", fields: [uploadedById], references: [id])
+  downloadLogs DownloadLog[]
+
+  @@index([companyId, year, month])
+}
+
+model BookkeepingFile {
+  id           String   @id @default(cuid())
+  companyId    String
+  year         Int
+  month        Int?
+  category     String?  // e.g. "דוח מע"מ", "מאזן", etc.
+  fileUrl      String
+  fileName     String
+  fileSizeBytes Int?
+  uploadedById String
+  uploadedAt   DateTime @default(now())
+
+  company      Company  @relation(fields: [companyId], references: [id])
+  uploadedBy   User     @relation("UploadedByEmployee", fields: [uploadedById], references: [id])
+  downloadLogs DownloadLog[]
+
+  @@index([companyId, year])
+}
+
+model DownloadLog {
+  id              String   @id @default(cuid())
+  userId          String
+  fileType        String   // "payroll" | "bookkeeping"
+  payrollFileId   String?
+  bookkeepingFileId String?
+  downloadedAt    DateTime @default(now())
+
+  user            User            @relation(fields: [userId], references: [id])
+  payrollFile     PayrollFile?    @relation(fields: [payrollFileId], references: [id])
+  bookkeepingFile BookkeepingFile? @relation(fields: [bookkeepingFileId], references: [id])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  companyId   String
+  senderId    String
+  senderRole  Role
+  subject     String
+  body        String
+  replyBody   String?
+  repliedAt   DateTime?
+  repliedById String?
+  createdAt   DateTime @default(now())
+
+  company     Company  @relation(fields: [companyId], references: [id])
+  sender      User     @relation(fields: [senderId], references: [id])
+}
+
+model HomepageContent {
+  id        String   @id @default("singleton")
+  officeInfo Json    // { name, description, phone, email, address }
+  teamMembers Json   // array of { name, title, phone, photoUrl }
+  updatedAt DateTime @updatedAt
+}
+
+model ShikloletTask {
+  id          String   @id @default(cuid())
+  companyId   String
+  year        Int
+  month       Int
+  employeeId  String?  // null = all employees
+  employeeName String?
+  status      String   @default("pending") // pending | processing | done | failed
+  errorMsg    String?
+  resultFileUrl String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
