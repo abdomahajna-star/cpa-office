@@ -14,7 +14,7 @@ export interface SessionPayload {
 
 // ── Sign & issue a session cookie ──────────────────────────────────────────
 export async function createSession(payload: SessionPayload) {
-  const token = await new SignJWT(payload as Record<string, unknown>)
+  const token = await new SignJWT(payload as unknown as Record<string, unknown>)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("8h")
